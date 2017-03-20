@@ -6,15 +6,13 @@ let path = require('path'),
     FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 gutil = require('gulp-util');
 
-gutil.log('测试路径', path.resolve(__dirname, './app/styles'));
-
 module.exports = {
     devtool: "cheap-source-map", // source-map
     debug: true,
     entry: {
         app: [
             'webpack-hot-middleware/client',
-            path.resolve(__dirname, './app/index.js')],
+            path.resolve(__dirname, './app/index')],
     },
     output: {
         path: path.resolve(__dirname, '__dist'),
