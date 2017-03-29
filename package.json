@@ -50,17 +50,23 @@
     "lodash": "^4.17.4",
     "npm": "^4.0.5",
     "react": "^15.4.2",
+    "react-css-modules": "^4.1.0",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
     "react-router": "^4.0.0",
     "react-router-config": "^1.0.0-beta.1",
     "react-router-dom": "^4.0.0",
+    "react-router-redux": "^5.0.0-alpha.4",
     "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.1",
     "webpack-hot-middleware": "^2.17.1",
     "webpack-merge": "^3.0.0"
+  },
+  "dependencies": {
+    "react-router-redux": "^5.0.0-alpha.4"
   }
 }

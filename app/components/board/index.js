@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import {Route} from 'react-router'
 
 const BoardA = (match) => {
@@ -8,17 +8,26 @@ const BoardA = (match) => {
     )
 }
 let Board = React.createClass({
+    // contextTypes: {
+    //     router: PropTypes.object,
+    // },
     render(){
         return (
             <div>
                 <div>Board</div>
                 <Route path="/board/BoardA" exact render={({match}) => {
                     console.log(match)
-                    return (<div>Home</div>)
-                } }/>
-            </div>
-        )
-    }
-})
+                    return (<div> Home
+                        <p onClick={() => {
+                            this.props.history.push({
+                                pathname: '/item',
+                            })
+                        }}>点击点击点击</p>
+                            </div>)
+                        } }/>
+                    </div>
+                    )
+                }
+                })
 
-export default Board
+                export default Board

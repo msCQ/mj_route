@@ -26,6 +26,7 @@ module.exports = {
             "Actions": path.resolve(__dirname, './app/actions'),
             "Containers": path.resolve(__dirname, './app/containers'),
             "Reducers": path.resolve(__dirname, './app/reducers'),
+            "Services": path.resolve(__dirname, './app/services'),
         },
     },
     module: {
@@ -48,7 +49,7 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:6]', 'less-loader?strictMath&noIeCompat')
             },
             {
                 test: /\.(png|jpe?g|gif)$/,
