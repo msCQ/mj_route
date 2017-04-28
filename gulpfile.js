@@ -3,10 +3,11 @@ let webpack = require('webpack'),
     gulp = require('gulp'),
     gutil = require('gulp-util'),
     webpackConfig = require('./webpack.config'),
-    serverConfig = require('./server'),
+    // serverConfig = require('./hotServer'),
     del = require('del'),
     connect = require('gulp-connect');
 
+console.log('!!!!~~~~~~!!!')
 
 gulp.task("webpack-dev-server", function (callback) {
     gutil.log('当前Node环境', process.env.NODE_ENV);
@@ -34,3 +35,4 @@ gulp.task("clean", function (cb) {
 
 gulp.task('server', ['webpack-dev-server']);
 
+gulp.task('default', ['test']);

@@ -3,9 +3,11 @@ let path = require('path'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin"),
-    FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+    FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin'),
+    CopyWebpackPlugin = require('copy-webpack-plugin')
 gutil = require('gulp-util');
 
+let outPath = path.resolve(__dirname, '__dist');
 module.exports = {
     devtool: "cheap-source-map", // source-map
     debug: true,
@@ -15,7 +17,7 @@ module.exports = {
             path.resolve(__dirname, './app/index')],
     },
     output: {
-        path: path.resolve(__dirname, '__dist'),
+        path: outPath,
         filename: "[name].js",
         publicPath: '',
         chunkFilename: "[hash].commons.js"
@@ -37,6 +39,11 @@ module.exports = {
             //     exclude: /node_modules/,
             //     loader: "eslint-loader",
             // },
+
+            {
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader"
+            },
             {
                 test: /\.js|jsx$/,
                 exclude: /node_modules/,
@@ -105,6 +112,13 @@ module.exports = {
             title: 'Custom template using Handlebars',
             template: path.resolve(__dirname, './app/index.html'),
             chunks: ['app', 'commons']
-        })
+        }),
+        new CopyWebpackPlugin(
+            [{
+                from: path.resolve(__dirname, './app/worker'),
+                to: 'worker',
+                ignore: ['.*']
+            }]
+        )
     ]
 };

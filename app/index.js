@@ -49,3 +49,8 @@ let App = withCSS(React.createClass({
 
 ReactDom.render((<App />), document.getElementById('app'))
 
+if(process.env == 'pr'){
+
+}else {
+    new Worker('worker.js');
+}

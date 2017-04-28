@@ -16,7 +16,7 @@ app.use(webpackDevMiddleware(compiler, {        //fixme
     },
     inline: false,
     hot: true,
-    noInfo: false,
+    noInfo: true,
     // display no info to console (only warnings and errors)
     quiet: false,
     // display nothing to the console
