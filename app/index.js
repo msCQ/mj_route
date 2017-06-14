@@ -16,8 +16,8 @@ import Index from './components'
 import Project from './components/board'
 import withCSS from 'Services/withCSS'
 
-//
-//
+import './ts/test.ts'
+
 const history = createHashHistory()
 // const middleware = routerMiddleware(history)
 // const store = createStore(
@@ -48,9 +48,3 @@ let App = withCSS(React.createClass({
 }), styles);
 
 ReactDom.render((<App />), document.getElementById('app'))
-
-if(process.env == 'pr'){
-
-}else {
-    new Worker('worker.js');
-}

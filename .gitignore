@@ -5,6 +5,6 @@
 .idea/modules.xml
 .idea/workspace.xml
 node_modules/
-package.json
 !/.gitignore
-!/package.json
+app/routes/project/
+package.json
