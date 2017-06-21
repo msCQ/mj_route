@@ -1,50 +1,28 @@
 import ReactDom from 'react-dom'
 import React from 'react'
-import {Router, Route} from 'react-router'
+import {Router, Route, Redirect, Switch} from 'react-router'
+import Index from '@/components/index'
+import Login from '@/components/login/index'
 import {createHashHistory, createMemoryHistory} from 'history'
-import {Link} from 'react-router-dom'
-import {createStore, combineReducers, applyMiddleware} from 'redux'
+import '@/styles/reset.css'
 import {Provider} from 'react-redux'
-import {ConnectedRouter, routerReducer, routerMiddleware, push} from 'react-router-redux'
+import store from '@/redux/store'
 
+const history = createMemoryHistory()
 
-import 'Styles/reset.css'
-let styles = require('Styles/index.less')
-import Board from './components/board'
-import Item from './components/item'
-import Index from './components'
-import Project from './components/board'
-import withCSS from 'Services/withCSS'
-
-import './ts/test.ts'
-
-const history = createHashHistory()
-// const middleware = routerMiddleware(history)
-// const store = createStore(
-//     combineReducers({
-//         ...reducers,
-//         router: routerReducer
-//     }),
-//     applyMiddleware(middleware)
-// )
-
-
-let App = withCSS(React.createClass({
+let App = React.createClass({
     render(){
         return (
-            <Router history={history}>
-                <div>
-                    <ul styleName="tab">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/board">board</Link></li>
-                        <li><Link to="/item">item</Link></li>
-                    </ul>
-                    <Route path="/board" component={Board}/>
-                    <Route path="/item" component={Item}/>
-                </div>
-            </Router>
+            <Provider store={store}>
+                <Router history={history}>
+                    <Switch>
+                        <Route exact path="/login" component={Login}/>
+                        <Route path="/" component={Index}/>
+                    </Switch>
+                </Router>
+            </Provider>
         )
     }
-}), styles);
+});
 
 ReactDom.render((<App />), document.getElementById('app'))

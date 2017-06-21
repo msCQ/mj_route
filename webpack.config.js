@@ -7,6 +7,10 @@ let path = require('path'),
     CopyWebpackPlugin = require('copy-webpack-plugin')
 gutil = require('gulp-util');
 
+function resolve(dir) {
+    return path.join(__dirname, dir)
+}
+
 let outPath = path.resolve(__dirname, '__dist');
 module.exports = {
     devtool: "cheap-source-map", // source-map
@@ -29,6 +33,7 @@ module.exports = {
             "Containers": path.resolve(__dirname, './app/containers'),
             "Reducers": path.resolve(__dirname, './app/reducers'),
             "Services": path.resolve(__dirname, './app/services'),
+            '@': resolve('app'),
         },
     },
     module: {
@@ -56,7 +61,7 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:6]', 'less-loader?strictMath&noIeCompat')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader?strictMath&noIeCompat')
             },
             {
                 test: /\.(png|jpe?g|gif)$/,
@@ -79,7 +84,7 @@ module.exports = {
              */
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-            }
+            },
         }),
         new webpack.NoErrorsPlugin(),
         new ExtractTextPlugin("app.css", {

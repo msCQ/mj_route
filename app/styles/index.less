@@ -1,10 +1,15 @@
-.tab {
-  display: flex;
-  justify-content: left;
-  li {
-    display: block;
-    height: 40px;
-    width: 100px;
-    text-align: center;
-  }
+&::-webkit-scrollbar {
+    width: 6px;
+    background-color: #dadde5;
+    border: 2px solid white;
+}
+
+&::-webkit-scrollbar-thumb {
+    width: 3px;
+    background-color: white;
+    border: 1px solid #01acf3;;
+    border-radius: 5px;
+    &:hover {
+        border-color: #00b0e5;
+    }
 }
