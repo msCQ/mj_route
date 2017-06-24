@@ -158,6 +158,7 @@ class HashPopManager {
         let {history, l} = this.entries[hash]
         return {
             data: history[l],
+            hash,
             l,
             total: this.entries[hash].history.length
         }

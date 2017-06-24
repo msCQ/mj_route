@@ -1,17 +1,20 @@
-import React, {PropTypes} from 'react'
+import React, {PropTypes, Component, PureComponent} from 'react'
 import {Route, Switch, Redirect} from 'react-router'
 import Home from '@/components/home/index'
 import Search from '@/components/search/index'
 import MyBoard from '@/components/myBoard/index'
 import Tab from '@/components/tab/index'
 import Pop from '@/components/pop/index'
-import withLess from '@/services/withLess'
+import withCss from '@/services/withCss'
 import styles from './page.less'
 
-const createClass = (opt) => withLess(opt, styles)
+@withCss(styles)
+class Page extends Component {
+    constructor(props) {
+        super(props)
+    }
 
-let Page = createClass({
-    render(){
+    render() {
         return (
             <div>
                 <Tab/>
@@ -27,7 +30,7 @@ let Page = createClass({
             </div>
         )
     }
-})
+}
 export default Page
 
 

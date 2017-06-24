@@ -2,9 +2,12 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {openPop} from '@/redux/action/pop'
 
-let Search = React.createClass({
+class Search extends React.PureComponent {
+    constructor(props) {
+        super(props)
+    }
 
-    render(){
+    render() {
         const {match, location, history} = this.props
         return (
             <div>
@@ -19,7 +22,7 @@ let Search = React.createClass({
             </div>
         )
     }
-})
+}
 
 const mapStateToProps = function (state) {
     return {}
@@ -32,7 +35,6 @@ const mapDispatchProps = function (dispatch, getState) {
         }
     }
 }
-
 
 
 export default connect(mapStateToProps, mapDispatchProps)(Search)

@@ -8,10 +8,19 @@ import '@/styles/reset.css'
 import {Provider} from 'react-redux'
 import store from '@/redux/store'
 
+
+import Perf from 'react-dom/lib/ReactPerf'    //
+window.Perf = Perf
+
 const history = createMemoryHistory()
 
-let App = React.createClass({
-    render(){
+class App extends React.PureComponent {
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
+
+    render() {
         return (
             <Provider store={store}>
                 <Router history={history}>
@@ -23,6 +32,6 @@ let App = React.createClass({
             </Provider>
         )
     }
-});
+}
 
 ReactDom.render((<App />), document.getElementById('app'))

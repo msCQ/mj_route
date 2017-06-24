@@ -1,19 +1,28 @@
 import React from 'react'
 import {withRouter} from 'react-router'
 
-import withLess from '@/services/withLess'
+import withCss from '@/services/withCss'
 import styles from './tab.less'
-const createClass = option => withLess(option, styles)
 
+function withCName(component) {
+    component.displayName = 'CCCCCC'
+    return component
+}
 
-let Tab = createClass({
-    displayName: 'Tab',
-    getInitialState(){
-        return {
-            tabs: ['home', 'search', 'myBoard']
-        }
-    },
-    render(){
+console.log(withCss(styles))
+
+@withCName
+@withCss(styles)
+class Tab extends React.PureComponent {
+    constructor(props) {
+        super(props)
+    }
+
+    state = {
+        tabs: ['home', 'search', 'myBoard']
+    }
+
+    render() {
         const {match, history, location} = this.props,
             {tabs} = this.state
         return (
@@ -38,6 +47,6 @@ let Tab = createClass({
             </div>
         )
     }
-})
+}
 
 export default withRouter(Tab)

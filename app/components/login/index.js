@@ -1,8 +1,12 @@
-import React, {PropTypes} from 'react'
+import React, {PropTypes, PureComponent} from 'react'
 import {Route} from 'react-router'
 
-let Login = React.createClass({
-    render(){
+class Login extends PureComponent {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
         return (
             <div>
                 用户为登陆状态
@@ -14,7 +18,7 @@ let Login = React.createClass({
             </div>
         )
     }
-})
+}
 export default Login
 
 

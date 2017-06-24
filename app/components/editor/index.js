@@ -2,14 +2,17 @@ import React, {PropTypes} from 'react'
 import {Route} from 'react-router'
 
 import MyBoard from '@/components/myBoard/index'
-import withLess from '@/services/withLess'
+import withCss from '@/services/withCss'
 import styles from './editor.less'
-const createClass = (opt) => withLess(opt, styles)
 
+@withCss(styles)
+class Editor extends React.PureComponent {
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
 
-let Editor = createClass({
-    display: 'Editor',
-    render(){
+    render() {
         return (
             <div styleName="editor">
                 EditorEditorEditorEditor
@@ -17,7 +20,7 @@ let Editor = createClass({
             </div>
         )
     }
-})
+}
 
 export default Editor
 

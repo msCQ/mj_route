@@ -15,24 +15,24 @@ import {
     innerPopGoForword,
     asyncClosePopAll
 } from '@/redux/action/pop'
-import withLess from '@/services/withLess'
+import withCss from '@/services/withCss'
 import styles from './pop.less'
 import toUpper from 'lodash/toUpper'
-const createClass = (opt) => withLess(opt, styles)
 
+@withCss(styles)
+class Pop extends React.PureComponent {
+    constructor(props) {
+        super(props)
+    }
 
-let Pop = React.createClass({
-    getDefaultProps(){
-        return {
-            popManager: {
-                pops: []
-            }
+    state = {}
+    static defaultProps = {
+        popManager: {
+            pops: []
         }
-    },
-    getInitialState(){
-        return {}
-    },
-    componentWillReceiveProps(nextProps, nextState){
+    }
+
+    componentWillReceiveProps(nextProps, nextState) {
         if (nextProps.location !== this.props.location) {
             let nextEntryType = this._getEntryType(nextProps.location.pathname),
                 prevEntryType = this._getEntryType(this.props.location.pathname);
@@ -40,16 +40,26 @@ let Pop = React.createClass({
                 this.props.traceBackPop(nextEntryType);
             }
         }
-    },
-    _getEntryType(pathname){
+    }
+
+    _getEntryType(pathname) {
         for (let i = POP_MAP.length - 1; i >= 0; i--) {
             let m = toUpper(pathname);
             if (m.indexOf(POP_MAP[i]) === 1) {
                 return POP_MAP[i]
             }
         }
-    },
-    render(){
+    }
+
+    show = () => {
+        console.log(2111)
+    }
+
+    showMsg = () => {
+        this.show();
+    }
+
+    render() {
         let {
                 location,
                 popManager: {pops},
@@ -75,50 +85,57 @@ let Pop = React.createClass({
                 asyncClosePopAll
             },
             entry = this._getEntryType(location.pathname);
-        return pops.length ?
-            (
-                <div>
-                    {
-                        pops.map((data, index) => {
-                            if (!data) {
-                                return
-                            }
-                            return <Modal key={index}
-                                          index={index}
-                                          data={data}
-                                          entry={entry}
-                                          {...popHandle}
-                            />
-                        })
-                    }
-                </div>
-            ) : null
+        return (
+            <ReactCSSTransitionGroup transitionName="pop-modal"
+                                     transitionLeaveTimeout={500}
+                                     transitionEnterTimeout={500}
+                // component={(props) => {
+                //     const childrenArray = React.Children.toArray(props.children);
+                //     return childrenArray[childrenArray.length - 1] || null;
+                // }}
+            >
+                {
+                    pops.map((data, index) => {
+                        if (!data) {
+                            return
+                        }
+                        return <Modal key={data.hash}
+                                      index={index}
+                                      data={data}
+                                      entry={entry}
+                                      {...popHandle}
+                                      showMsg={this.showMsg}
+                        />
+                    })
+                }
+            </ReactCSSTransitionGroup>
+        )
     }
-})
+}
 
-let Modal = createClass({
-    displayName: 'Modal',
-    getDefaultProps() {
-        return {
-            /**
-             *   extra 强制  无动画
-             *   unfore 只有头部 没有内容
-             *   fore 带动画
-             */
-            renderMode: PropTypes.oneOf(['extra', 'fore', 'unfore'])
-        }
-    },
-    getInitialState(){
-        return {
-            value: ''
-        }
-    },
-    componentDidMount(){
-    },
-    componentWillUnmount(){
+@withCss(styles)
+class Modal extends React.PureComponent {
+    static defaultProps = {
+        /**
+         *   extra 强制  无动画
+         *   unfore 只有头部 没有内容
+         *   fore 带动画
+         */
+        renderMode: PropTypes.oneOf(['extra', 'fore', 'unfore'])
+    }
 
-    },
-    render(){
+    state = {
+        value: ''
+    }
+
+    componentDidMount() {
+    }
+
+    componentWillUnmount() {
+
+    }
+
+    render() {
         const {index, data, entry} = this.props;
         let msg = `当前打开了第${index}`,
             parseData = JSON.stringify(data)
@@ -185,6 +202,13 @@ let Modal = createClass({
                             })
                         }}>关闭所有</span>
                     </div>
+                    <div styleName="btnWrap">
+                        <span onClick={() => {
+                            this.props.showMsg()
+                        }}>aaaaa</span>
+                    </div>
+
+
                     <input type="text" value={this.state.value} onChange={(e) => {
                         this.state.value = e.target.value;
                         this.setState(this.state);
@@ -195,7 +219,8 @@ let Modal = createClass({
             </div>
         )
     }
-})
+}
+
 
 const mapStateToProps = (state) => {
     return {

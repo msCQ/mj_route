@@ -3,12 +3,16 @@ import {Route} from 'react-router'
 import Page from '@/components/page'
 import Editor from '@/components/editor/index'
 
-let Index = React.createClass({
-    getInitialState(){
-        return {
-            windowMode: 1,      //窗口状态
-        }
-    },
+
+class Index extends React.PureComponent {
+    constructor(props) {
+        super(props)
+    }
+
+    state = {
+        windowMode: 1,      //窗口状态
+    }
+
     render() {
         return (
             <div>
@@ -17,6 +21,6 @@ let Index = React.createClass({
             </div>
         )
     }
-})
+}
 
 module.exports = Index

@@ -1,9 +1,14 @@
-import React, {PropTypes} from 'react'
+import React, {PropTypes, PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {openPop} from '@/redux/action/pop'
 
-let Home = React.createClass({
-    render(){
+
+class Home extends PureComponent {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
         const {match, location, history} = this.props
         return (
             <div>
@@ -26,7 +31,7 @@ let Home = React.createClass({
             </div>
         )
     }
-});
+}
 
 const mapStateToProps = function (state) {
     return {}

@@ -56,19 +56,19 @@
         opacity: .01;
         transform: translateY(-100%);
     }
-    .pop-modal-enter-active {
+    .pop-modal-enter.pop-modal-enter-active {
         opacity: 1;
         transform: translateY(0);
-        transition: all .3s cubic-bezier(0.18, 0.89, 0.38, 1.12);
+        transition: all .5s cubic-bezier(0.18, 0.89, 0.38, 1.12);
     }
-    .pop-modal-list-leave {
+    .pop-modal-leave {
         opacity: 1;
         transform: translateY(0);
     }
-    .pop-modal-list-leave.pop-modal-leave-active {
+    .pop-modal-leave.pop-modal-leave-active {
         opacity: .01;
         transform: translateY(-100%);
-        transition: all .3s cubic-bezier(0.18, 0.89, 0.38, 1.12);
+        transition: all .5s cubic-bezier(0.18, 0.89, 0.38, 1.12);
     }
 }
 

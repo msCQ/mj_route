@@ -28,11 +28,6 @@ module.exports = {
     },
     resolve: {
         alias: {
-            "Styles": path.resolve(__dirname, './app/styles'),
-            "Actions": path.resolve(__dirname, './app/actions'),
-            "Containers": path.resolve(__dirname, './app/containers'),
-            "Reducers": path.resolve(__dirname, './app/reducers'),
-            "Services": path.resolve(__dirname, './app/services'),
             '@': resolve('app'),
         },
     },
