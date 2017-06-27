@@ -100,6 +100,19 @@ class PopTransitionManager {
 
 class HashPopManager {
     constructor() {
+        /**
+         * 内部数据结构
+         * @type
+         * key: hash    针对搜索结果  搜索内容的范围 直接传入值即可
+         * value: json
+         *
+         *      json 结构 :
+         *          action
+         *          l       当前下标
+         *          history 记录让当前数据的下标
+         */
+
+
         this.entries = {}
     }
 
