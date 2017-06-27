@@ -27,6 +27,7 @@ class Pop extends PureComponent {
     }
 
     state = {}
+
     static defaultProps = {
         popManager: {
             pops: []
@@ -52,40 +53,42 @@ class Pop extends PureComponent {
         }
     }
 
+    popHandle = {
+        openPop: this.props.openPop,
+        closePop: this.props.closePop,
+        closePopAll: this.props.closePopAll,
+        traceBackPop: this.props.traceBackPop,
+        innerPopPush: this.props.innerPopPush,
+        innerPopReplace: this.props.innerPopReplace,
+        innerPopGoBack: this.props.innerPopGoBack,
+        innerPopGoForword: this.props.innerPopGoForword,
+        asyncClosePopAll: this.props.asyncClosePopAll
+    }
+
     render() {
         let {
                 location,
                 popManager: {pops},
             } = this.props,
-            popHandle = {
-                openPop: this.props.openPop,
-                closePop: this.props.closePop,
-                closePopAll: this.props.closePopAll,
-                traceBackPop: this.props.traceBackPop,
-                innerPopPush: this.props.innerPopPush,
-                innerPopReplace: this.props.innerPopReplace,
-                innerPopGoBack: this.props.innerPopGoBack,
-                innerPopGoForword: this.props.innerPopGoForword,
-                asyncClosePopAll: this.props.asyncClosePopAll
-            },
             entry = this._getEntryType(location.pathname);
         return (
             <ReactCSSTransitionGroup transitionName="pop-modal"
                                      transitionLeaveTimeout={500}
-                                     transitionEnterTimeout={500}
-            >
+                                     transitionEnterTimeout={500}>
                 {
-                    pops.map((data, index) => {
+                    pops.map((data, index, pops) => {
                         if (!data) {
                             return null
                         }
                         return (
                             <Modal key={data.hash}
+                                   hash={data.hash}
                                    index={index}
-                                   data={data}
                                    entry={entry}
-                                   {...popHandle}
+                                   data={data.data}
+                                   {...this.popHandle}
                                    showMsg={this.showMsg}
+                                   isTop={index === pops.length - 1}
                             />
                         )
                     })
@@ -117,10 +120,17 @@ class Modal extends PureComponent {
 
     }
 
+    componentWillReceiveProps(nextProps, nextState) {
+        if (nextProps.data !== this.props.data) {
+            console.log('diff');
+        }
+    }
+
     render() {
-        const {index, data, entry} = this.props;
+        const {index, entry, data = {}, isTop, hash} = this.props;
         let msg = `当前打开了第${index}`,
             parseData = JSON.stringify(data)
+        console.log('渲染次数看这里～～～～', hash, index)
         return (
             <div styleName="modal">
                 <header>
@@ -135,6 +145,15 @@ class Modal extends PureComponent {
                         关闭
                     </div>
                 </header>
+                {
+                    isTop ? (
+                        <p>
+                            顶层视图
+                            渲染内容区域
+                            props.children 渲染
+                        </p>
+                    ) : null
+                }
                 <section>
                     <div styleName="btnWrap">
                         <span onClick={() => {

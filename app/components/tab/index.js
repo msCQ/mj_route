@@ -4,14 +4,6 @@ import {withRouter} from 'react-router'
 import withCss from '@/services/withCss'
 import styles from './tab.less'
 
-function withCName(component) {
-    component.displayName = 'CCCCCC'
-    return component
-}
-
-console.log(withCss(styles))
-
-@withCName
 @withCss(styles)
 class Tab extends React.PureComponent {
     constructor(props) {
