@@ -1,5 +1,6 @@
 import React, {PureComponent, Component} from 'react'
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 import withCss from '@/services/withCss'
 import styles from './waterfall.less'
 import minBy from 'lodash/minBy'
@@ -23,51 +24,59 @@ class WaterFall extends PureComponent {
         super(props)
     }
 
+    static propTypes = {
+        windowObj: PropTypes.object
+    }
     static props = {}
 
     state = {
         firstRenderIndex: 0,
         renderList: [],
+        renderNumber: 15,
         list: [],
         gridHeight: 0,
         small: {
             width: 780,
-            iWidth: 756
+            iWidth: 756,
+            column: 3
         },
         middle: {
-            width: 780,
-            iWidth: 756
+            width: 1040,
+            iWidth: 1016,
+            column: 4
         },
         big: {
-            width: 780,
-            iWidth: 756
+            width: 1040,
+            iWidth: 1016,
+            column: 4
         },
-        column: 3
     }
 
     componentDidMount() {
-        this.initGrid()
-
-
+        let column = this.state[this.props.windowObj.mode].column
+        this.initGrid(column)
         this.refs['WaterFall_Gird'].addEventListener('scroll', this.handleScroll, false)
     }
 
-    componentWillReceive(nextProps, nextContext) {
-
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.windowObj.mode !== this.props.windowObj.mode) {
+            let column = this.state[nextProps.windowObj.mode].column
+            this.initGrid(column)
+        }
     }
 
     componentWillUnMount() {
         this.refs['WaterFall_Gird'].removeEventListener('scroll', this.handleScroll)
     }
 
-    initGrid = () => {
+    initGrid = (column) => {
         let girdS = []
         for (let i = 0; i < 17; i++) {
             gridData.forEach((i) => {
                 girdS.push({...i});
             })
         }
-        let gridObject = this.getGridObject(girdS),
+        let gridObject = this.getGridObject(girdS, column),
             {boards, columns} = gridObject,
             maxHeight = maxBy(columns, (column) => {
                 return column.h
@@ -75,7 +84,7 @@ class WaterFall extends PureComponent {
         this.setState({
             list: boards,
             gridHeight: maxHeight,
-            renderList: boards.slice(0, 10)
+            renderList: boards.slice(0, this.state.renderNumber)
         })
     }
 
@@ -102,18 +111,23 @@ class WaterFall extends PureComponent {
             }
         }
         if (firstRenderIndex !== this.state.firstRenderIndex) {
+            let {renderNumber} = this.state,
+                renderList = list.slice(firstRenderIndex, firstRenderIndex + renderNumber)
+            if (list.length - 1 - firstRenderIndex - renderNumber < renderNumber) {
+                renderList = list.slice(firstRenderIndex, list.length - 1)  //接近末尾刷出 尾数据
+            }
             this.setState({
                 firstRenderIndex,
-                renderList: list.slice(firstRenderIndex, firstRenderIndex + 10)
+                renderList
             })
             console.log('第一个渲染的DOM 下标', firstRenderIndex, `scrollTop: ${scrollTop}`)
         }
     }
 
-    getGridObject(boards) {
+    getGridObject(boards, column) {
         const WIDTH_PADDING = 24;
         const HEIGHT_PADDING = 4;
-        let columns = new Array(this.state.column).fill(true);
+        let columns = new Array(column).fill(true);
         columns = columns.map(() => {
             return {
                 h: 0,
@@ -138,13 +152,13 @@ class WaterFall extends PureComponent {
     }
 
     render() {
-        let {list, renderList, small: {width, iWidth}, gridHeight} = this.state
+        let {renderList, gridHeight} = this.state,
+            iWidth = this.state[this.props.windowObj.mode].iWidth
 
         return (
-            <section>
-                <p>瀑布流</p>
-                <div ref="WaterFall_Gird"
-                     styleName="grid-center">
+            <section styleName="waterfall"
+                     ref="WaterFall_Gird">
+                <div styleName="grid-center">
                     <div>
                         <div
                             styleName="grid-contains"
@@ -206,9 +220,14 @@ class Board extends PureComponent {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        windowObj: state.appSetting.windowObj
+    }
+}
 
 
-export default WaterFall
+export default connect(mapStateToProps)(WaterFall)
 
 
 

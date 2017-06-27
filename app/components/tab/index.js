@@ -11,7 +11,7 @@ class Tab extends React.PureComponent {
     }
 
     state = {
-        tabs: ['home', 'search', 'myBoard']
+        tabs: ['home', 'search', 'myBoard', 'waterfall']
     }
 
     render() {

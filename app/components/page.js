@@ -21,7 +21,7 @@ class Page extends Component {
                 <Tab/>
                 <section styleName="page">
                     <Switch>
-                        <Route exact path="/" render={() => (<Redirect to="/home"/>)}/>
+                        <Route exact path="/" render={() => (<Redirect to="/waterfall"/>)}/>
                         <Route path="/waterfall" component={WaterFall}/>
                         <Route path="/home" component={Home}/>
                         <Route path="/search" component={Search}/>

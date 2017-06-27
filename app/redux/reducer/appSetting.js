@@ -16,9 +16,9 @@ export default function appSetting(state = initAppSetting, action) {
             let h = window.innerHeight,
                 w = window.innerWidth,
                 mode = '';
-            if (w > 0 && w < 780) {
+            if (w > 0 && w < 1040) {
                 mode = 'small'
-            } else if (w >= 780 && w < 1440) {
+            } else if (w >= 1040 && w < 1440) {
                 mode = 'middle'
             } else if (w >= 1440) {
                 mode = 'big'
