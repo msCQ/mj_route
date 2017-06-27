@@ -1,7 +1,7 @@
-import React, {PropTypes, PureComponent} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {openPop} from '@/redux/action/pop'
-
 
 class Home extends PureComponent {
     constructor(props) {

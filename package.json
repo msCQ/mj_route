@@ -54,6 +54,7 @@
     "lodash": "^4.17.4",
     "npm": "^4.0.5",
     "postcss-loader": "^2.0.6",
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-css-modules": "^4.1.0",
     "react-dom": "^15.6.1",

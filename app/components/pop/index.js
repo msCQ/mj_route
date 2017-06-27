@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {POP_MAP} from '@/services/const'
@@ -20,7 +21,7 @@ import styles from './pop.less'
 import toUpper from 'lodash/toUpper'
 
 @withCss(styles)
-class Pop extends React.PureComponent {
+class Pop extends PureComponent {
     constructor(props) {
         super(props)
     }
@@ -42,7 +43,7 @@ class Pop extends React.PureComponent {
         }
     }
 
-    _getEntryType(pathname) {
+    _getEntryType = (pathname) => {
         for (let i = POP_MAP.length - 1; i >= 0; i--) {
             let m = toUpper(pathname);
             if (m.indexOf(POP_MAP[i]) === 1) {
@@ -51,61 +52,42 @@ class Pop extends React.PureComponent {
         }
     }
 
-    show = () => {
-        console.log(2111)
-    }
-
-    showMsg = () => {
-        this.show();
-    }
-
     render() {
         let {
                 location,
                 popManager: {pops},
-                openPop,
-                closePop,
-                closePopAll,
-                traceBackPop,
-                innerPopPush,
-                innerPopReplace,
-                innerPopGoBack,
-                innerPopGoForword,
-                asyncClosePopAll
             } = this.props,
             popHandle = {
-                openPop,
-                closePop,
-                closePopAll,
-                traceBackPop,
-                innerPopPush,
-                innerPopReplace,
-                innerPopGoBack,
-                innerPopGoForword,
-                asyncClosePopAll
+                openPop: this.props.openPop,
+                closePop: this.props.closePop,
+                closePopAll: this.props.closePopAll,
+                traceBackPop: this.props.traceBackPop,
+                innerPopPush: this.props.innerPopPush,
+                innerPopReplace: this.props.innerPopReplace,
+                innerPopGoBack: this.props.innerPopGoBack,
+                innerPopGoForword: this.props.innerPopGoForword,
+                asyncClosePopAll: this.props.asyncClosePopAll
             },
             entry = this._getEntryType(location.pathname);
         return (
             <ReactCSSTransitionGroup transitionName="pop-modal"
                                      transitionLeaveTimeout={500}
                                      transitionEnterTimeout={500}
-                // component={(props) => {
-                //     const childrenArray = React.Children.toArray(props.children);
-                //     return childrenArray[childrenArray.length - 1] || null;
-                // }}
             >
                 {
                     pops.map((data, index) => {
                         if (!data) {
-                            return
+                            return null
                         }
-                        return <Modal key={data.hash}
-                                      index={index}
-                                      data={data}
-                                      entry={entry}
-                                      {...popHandle}
-                                      showMsg={this.showMsg}
-                        />
+                        return (
+                            <Modal key={data.hash}
+                                   index={index}
+                                   data={data}
+                                   entry={entry}
+                                   {...popHandle}
+                                   showMsg={this.showMsg}
+                            />
+                        )
                     })
                 }
             </ReactCSSTransitionGroup>
@@ -114,7 +96,7 @@ class Pop extends React.PureComponent {
 }
 
 @withCss(styles)
-class Modal extends React.PureComponent {
+class Modal extends PureComponent {
     static defaultProps = {
         /**
          *   extra 强制  无动画
@@ -202,19 +184,14 @@ class Modal extends React.PureComponent {
                             })
                         }}>关闭所有</span>
                     </div>
-                    <div styleName="btnWrap">
-                        <span onClick={() => {
-                            this.props.showMsg()
-                        }}>aaaaa</span>
-                    </div>
-
-
                     <input type="text" value={this.state.value} onChange={(e) => {
-                        this.state.value = e.target.value;
-                        this.setState(this.state);
+                        this.setState({
+                            value: e.target.value
+                        });
                     }}/>
                     <p>{msg}</p>
                     <p>{parseData}</p>
+                    <div style={{height: 400}}/>
                 </section>
             </div>
         )

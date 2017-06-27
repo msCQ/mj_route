@@ -5,6 +5,7 @@ import Search from '@/components/search/index'
 import MyBoard from '@/components/myBoard/index'
 import Tab from '@/components/tab/index'
 import Pop from '@/components/pop/index'
+import WaterFall from '@/components/waterfall/index'
 import withCss from '@/services/withCss'
 import styles from './page.less'
 
@@ -21,6 +22,7 @@ class Page extends Component {
                 <section styleName="page">
                     <Switch>
                         <Route exact path="/" render={() => (<Redirect to="/home"/>)}/>
+                        <Route path="/waterfall" component={WaterFall}/>
                         <Route path="/home" component={Home}/>
                         <Route path="/search" component={Search}/>
                         <Route path="/myBoard" component={MyBoard}/>
@@ -31,6 +33,5 @@ class Page extends Component {
         )
     }
 }
+
 export default Page
-
-

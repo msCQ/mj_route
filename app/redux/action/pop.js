@@ -19,12 +19,7 @@ export const POP_ACTION = {
 
 
 export function openPop(entry, data) {
-    let pop = popTransitionManager.openPop(entry, data),
-        pops = [];
-    if (pop) {
-        pops = new Array(pop.s).fill(null);
-        pops[pop.s] = pop;
-    }
+    let pops = popTransitionManager.openPop(entry, data);
     return {
         type: POP_ACTION.PUSH,
         data: {
@@ -35,12 +30,7 @@ export function openPop(entry, data) {
 }
 
 export function closePop(entry) {
-    let pop = popTransitionManager.closePop(entry),
-        pops = [];
-    if (pop) {
-        pops = new Array(pop.s).fill(null);
-        pops[pop.s] = pop;
-    }
+    let pops = popTransitionManager.closePop(entry)
     return {
         type: POP_ACTION.CLOSE,
         data: {
@@ -61,12 +51,7 @@ export function closePopAll(entry) {
 }
 
 export function traceBackPop(entry) {
-    let pop = popTransitionManager.traceBack(entry),
-        pops = [];
-    if (pop) {
-        pops = new Array(pop.s).fill(null);
-        pops[pop.s] = pop;
-    }
+    let pops = popTransitionManager.traceBack(entry)
     return {
         type: POP_ACTION.TRACEBACK,
         data: {
@@ -78,12 +63,7 @@ export function traceBackPop(entry) {
 
 
 export function innerPopPush(entry, data) {
-    let pop = popTransitionManager.innerPush(entry, data),
-        pops = [];
-    if (pop) {
-        pops = new Array(pop.s).fill(null);
-        pops[pop.s] = pop;
-    }
+    let pops = popTransitionManager.innerPush(entry, data);
     return {
         type: POP_ACTION.INNER_PUSH,
         data: {
@@ -94,12 +74,7 @@ export function innerPopPush(entry, data) {
 }
 
 export function innerPopReplace(entry, data) {
-    let pop = popTransitionManager.innerReplace(entry, data),
-        pops = [];
-    if (pop) {
-        pops = new Array(pop.s).fill(null);
-        pops[pop.s] = pop;
-    }
+    let pops = popTransitionManager.innerReplace(entry, data)
     return {
         type: POP_ACTION.INNER_PUSH,
         data: {
@@ -110,14 +85,7 @@ export function innerPopReplace(entry, data) {
 }
 
 export function innerPopGoBack(entry) {
-    let pop = popTransitionManager.innerGoBack(entry),
-        pops = [];
-    if (pop) {
-        pops = new Array(pop.s).fill(null);
-        pops[pop.s] = pop;
-    } else {
-        return
-    }
+    let pops = popTransitionManager.innerGoBack(entry)
     return {
         type: POP_ACTION.INNER_PUSH,
         data: {
@@ -128,14 +96,7 @@ export function innerPopGoBack(entry) {
 }
 
 export function innerPopGoForword(entry) {
-    let pop = popTransitionManager.innerGoForword(entry),
-        pops = [];
-    if (pop) {
-        pops = new Array(pop.s).fill(null);
-        pops[pop.s] = pop;
-    } else {
-        return
-    }
+    let pops = popTransitionManager.innerGoForword(entry)
     return {
         type: POP_ACTION.INNER_PUSH,
         data: {
@@ -145,8 +106,8 @@ export function innerPopGoForword(entry) {
     }
 }
 
-export function asyncClosePopAll(){
-    return (dispatch, getState)=>{
+export function asyncClosePopAll() {
+    return (dispatch, getState) => {
         dispatch(closePopAll('HOME'))
     }
 

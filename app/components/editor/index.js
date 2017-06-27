@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {Route} from 'react-router'
 
 import MyBoard from '@/components/myBoard/index'

@@ -9,7 +9,8 @@ export function toggleEditMode(mode) {
     }
 }
 
-export function toggleWindowMode(mode) {
+export function toggleWindowMode(mode = '') {
+    //可以不带参数
     return {
         type: SETTING_WINDOW_MODE,
         mode

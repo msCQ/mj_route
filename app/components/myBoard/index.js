@@ -1,11 +1,12 @@
-import React, {PropTypes} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {openPop} from '@/redux/action/pop'
 
 import throttle from 'lodash/throttle'
 
 
-class MyBoard extends React.PureComponent {
+class MyBoard extends PureComponent {
     constructor(props) {
         super(props)
     }
@@ -38,7 +39,7 @@ class MyBoard extends React.PureComponent {
     }
 }
 
-class BB extends React.Component {
+class BB extends PureComponent {
     constructor(props) {
         super(props)
     }

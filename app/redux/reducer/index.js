@@ -1,9 +1,11 @@
 import {combineReducers} from 'redux'
 import pop from './pop'
+import appSetting from './appSetting'
 
 
 const rootReducer = combineReducers({
-    pop
+    pop,
+    appSetting
 })
 
 export default rootReducer

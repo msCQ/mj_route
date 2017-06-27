@@ -14,38 +14,24 @@ class PopTransitionManager {
         if (Array.isArray(initEntrise)) {
             initEntrise.forEach(entry => {
                 typeof entry === 'string' && (this.entries[entry] = [])
-                this.curEntry = initEntrise[0]
             })
         } else {
             typeof initEntrise === 'string' && (this.entries[initEntrise] = [])
-            this.curEntry = initEntrise
         }
     }
 
     openPop(entry, data) {
-        if (!data) {
-            debugger
-        }
         let hash = createHash()
         this.entries[entry].push(hash)
         this.hashPopManager.push(hash, data)
-        let pop = this.hashPopManager.getCurrentData(hash);
-        return {...pop, s: this.entries[entry].length - 1}
+        return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
 
     closePop(entry) {
         // 清楚之前所有的 hash
         let lastPop = this.entries[entry].pop()
         this.hashPopManager.deleleHash(lastPop)
-        let {length} = this.entries[entry]
-        if (length) {
-            let s = this.entries[entry].length - 1,
-                hash = this.entries[entry][s],
-                pop = this.hashPopManager.getCurrentData(hash);
-            return {...pop, s}
-        } else {
-            return null         //当前无视图
-        }
+        return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
 
     /**
@@ -61,33 +47,33 @@ class PopTransitionManager {
             this.hashPopManager.deleleHash(hash)
         })
         this.entries[entry] = []
-        return null
+        return []
     }
 
+    /**
+     * 回朔当前的数据
+     * @param entry
+     * @returns {null}
+     */
     traceBack(entry) {
         if (!this.entries[entry].length) {
-            return null
+            return []
         }
-        let s = this.entries[entry].length - 1,
-            hash = this.entries[entry][s],
-            pop = this.hashPopManager.getCurrentData(hash);
-        return {...pop, s}
+        return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
 
     innerPush(entry, data) {
         let s = this.entries[entry].length - 1,
             hash = this.entries[entry][s];
         this.hashPopManager.push(hash, data)
-        let pop = this.hashPopManager.getCurrentData(hash);
-        return {...pop, s}
+        return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
 
     innerReplace(entry, data) {
         let s = this.entries[entry].length - 1,
             hash = this.entries[entry][s];
         this.hashPopManager.replace(hash, data)
-        let pop = this.hashPopManager.getCurrentData(hash);
-        return {...pop, s}
+        return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
 
     innerGoBack(entry) {
@@ -95,10 +81,9 @@ class PopTransitionManager {
             hash = this.entries[entry][s];
         if (!this.hashPopManager.go(hash, -1)) {
             throw new Error('goBack Failed!!!')
-            return null
+            return []
         }
-        let pop = this.hashPopManager.getCurrentData(hash);
-        return {...pop, s}
+        return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
 
     innerGoForword(entry) {
@@ -106,10 +91,9 @@ class PopTransitionManager {
             hash = this.entries[entry][s];
         if (!this.hashPopManager.go(hash, 1)) {
             throw new Error('goForword Failed!!!')
-            return null
+            return []
         }
-        let pop = this.hashPopManager.getCurrentData(hash);
-        return {...pop, s}
+        return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
 
 }
@@ -142,14 +126,14 @@ class HashPopManager {
 
     replace(hash, data) {
         let obj = this.entries[hash],
-            action = 'REPLACE'
+            action = 'REPLACE';
         this.entries[hash].history[this.entries[hash].l] = data
     }
 
     go(hash, n) {
-        let obj = this.entries[hash];
-        let nextIndex = clamp(obj.l + n, 0, obj.history.length - 1);
-        let action = 'POP';
+        let obj = this.entries[hash],
+            nextIndex = clamp(obj.l + n, 0, obj.history.length - 1),
+            action = 'POP';
         obj.l = nextIndex;
         return nextIndex >= 0 && nextIndex <= obj.history.length - 1
     }
