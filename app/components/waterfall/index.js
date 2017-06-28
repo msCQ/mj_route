@@ -13,6 +13,8 @@ const gridData = [
     {w: 236, h: 180},
     {w: 236, h: 260}
 ]
+
+const PADDING_TRAIL = 200   // 上一个board 距离页面顶部距离
 /**
  * 分析 列之间间隔  24px
  */
@@ -50,48 +52,74 @@ class WaterFall extends PureComponent {
             iWidth: 1016,
             column: 4
         },
+        loading: false,
+        end: false
     }
+
+    scrollTop = 0
 
     componentDidMount() {
         let column = this.state[this.props.windowObj.mode].column
         this.initGrid(column)
-        this.refs['WaterFall_Gird'].addEventListener('scroll', this.handleScroll, false)
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.windowObj.mode !== this.props.windowObj.mode) {
-            let column = this.state[nextProps.windowObj.mode].column
-            this.initGrid(column)
+        if (nextProps.windowObj !== this.props.windowObj) {
+            let {mode} = nextProps.windowObj,
+                column = this.state[mode].column
+            // this.initGrid(column)
+            this.reSetGrid(column, this.props.windowObj.mode, nextProps.windowObj.mode)
         }
     }
 
     componentWillUnMount() {
-        this.refs['WaterFall_Gird'].removeEventListener('scroll', this.handleScroll)
+
     }
 
     initGrid = (column) => {
         let girdS = []
-        for (let i = 0; i < 17; i++) {
+        for (let i = 0; i < 5; i++) {
             gridData.forEach((i) => {
                 girdS.push({...i});
             })
         }
         let gridObject = this.getGridObject(girdS, column),
             {boards, columns} = gridObject,
-            maxHeight = maxBy(columns, (column) => {
+            curGridHeight = maxBy(columns, (column) => {
                 return column.h
             }).h
         this.setState({
             list: boards,
-            gridHeight: maxHeight,
+            gridHeight: curGridHeight,
             renderList: boards.slice(0, this.state.renderNumber)
         })
     }
 
+    /**
+     * 重置当前的数据
+     * @param column
+     * @param scrollTop
+     */
+    reSetGrid = (column, prevMode, mode) => {
+        let lastScrollTop = this.scrollTop,
+            lastIWidth = this.state[prevMode].iWidth,
+            curIWidth = this.state[mode].iWidth,
+            {list} = this.state;
+        let gridObject = this.getGridObject(list, column),
+            {boards, columns} = gridObject,
+            curGridHeight = maxBy(columns, (column) => {
+                return column.h
+            }).h,
+            curScrollTop = Math.ceil(lastScrollTop * lastIWidth / curIWidth);
+
+        this.setState({
+            list: boards,
+            gridHeight: curGridHeight,
+        })
+        this.refs['WaterFall_Gird'].scrollTop = curScrollTop    //重置scrollTop 触发onscroll
+    }
+
     handleScroll = (e) => {
-        let gridDom = e.target,
-            {scrollTop} = gridDom
-        // console.log(scrollTop)
         /**
          * 获取需要渲染的10个dom
          * 如何计算一个 第一个dom
@@ -99,22 +127,23 @@ class WaterFall extends PureComponent {
          *  当第一个dom尾部 到达不可见高度 即可渲染
          *
          */
-        const PADDING_TRAIL = 200
-        let {list} = this.state,
-            firstDom = {},
-            firstRenderIndex = 0;
-        for (let i = 0; i < this.state.list.length - 1; i++) {
-            let board = this.state.list[i]
+        let gridDom = e.target,
+            {scrollTop, offsetHeight} = gridDom,
+            {list, renderNumber, gridHeight, loading} = this.state,
+            firstRenderIndex = 0,
+            renderList = [];
+        this.scrollTop = scrollTop;                     //特殊处理滚动值的状态
+        for (let i = 0; i < list.length - 1; i++) {
+            let board = list[i]
             if (board.y + board.h > scrollTop - PADDING_TRAIL) {
                 firstRenderIndex = i
                 break;
             }
         }
         if (firstRenderIndex !== this.state.firstRenderIndex) {
-            let {renderNumber} = this.state,
-                renderList = list.slice(firstRenderIndex, firstRenderIndex + renderNumber)
+            renderList = list.slice(firstRenderIndex, firstRenderIndex + renderNumber)
             if (list.length - 1 - firstRenderIndex - renderNumber < renderNumber) {
-                renderList = list.slice(firstRenderIndex, list.length - 1)  //接近末尾刷出 尾数据
+                renderList = list.slice(firstRenderIndex, list.length)  //接近末尾刷出 尾数据
             }
             this.setState({
                 firstRenderIndex,
@@ -122,8 +151,27 @@ class WaterFall extends PureComponent {
             })
             console.log('第一个渲染的DOM 下标', firstRenderIndex, `scrollTop: ${scrollTop}`)
         }
+
+        /**
+         * 判断是否scroll 距离底部还有20个长度加载数据
+         */
+        if (scrollTop + offsetHeight > gridHeight - 20 && !loading) {
+            this.setState((prevState, props) => {
+                this.fetchData();
+                return {
+                    gridHeight: prevState.gridHeight + 40,
+                    loading: true
+                }
+            })
+        }
     }
 
+    /**
+     * 获取排列的  每列的数据和 单个board的偏移的数据
+     * @param boards
+     * @param column
+     * @returns {{columns: Array.<*>, boards: *}}
+     */
     getGridObject(boards, column) {
         const WIDTH_PADDING = 24;
         const HEIGHT_PADDING = 4;
@@ -151,13 +199,57 @@ class WaterFall extends PureComponent {
         }
     }
 
+    fetchData = () => {
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (this.__isMounted) return
+                resolve(gridData.map((i) => {
+                    return {...i}
+                }))
+            }, 1000)
+        }).then((iList) => {
+            /**
+             * 添加数据数  renderList不变
+             * PS 理想 list 是纯数据  父组件流入props.list
+             */
+
+            let {column} = this.state[this.props.windowObj.mode],
+                curList = this.state.list.concat(iList),
+                gridObject = this.getGridObject(curList, column),
+                {boards, columns} = gridObject,
+                maxHeight = maxBy(columns, (column) => {
+                    return column.h
+                }).h,
+                {renderList, list, renderNumber} = this.state;
+            let firstRenderIndex = list.indexOf(renderList[0]),             //找到上一次渲染的下标
+                reRenderNumber = Math.min(renderNumber, iList.length, 10),  //再次渲染进的数量
+                curRenderList = curList.slice(firstRenderIndex, firstRenderIndex + renderNumber + reRenderNumber)
+            this.setState({
+                list: curList,
+                renderList: curRenderList,
+                gridHeight: maxHeight,
+                loading: false
+            })
+
+        }, () => {
+            this.setState((prevState, props) => {
+                return {
+                    gridHeight: prevState.gridHeight - 40,
+                    loading: false
+                }
+            })
+        })
+    }
+
     render() {
-        let {renderList, gridHeight} = this.state,
+        let {renderList, gridHeight, loading} = this.state,
             iWidth = this.state[this.props.windowObj.mode].iWidth
 
         return (
             <section styleName="waterfall"
-                     ref="WaterFall_Gird">
+                     ref="WaterFall_Gird"
+                     onScroll={this.handleScroll}
+            >
                 <div styleName="grid-center">
                     <div>
                         <div
@@ -176,6 +268,11 @@ class WaterFall extends PureComponent {
                                                   index={board.index}
                                     />
                                 })
+                            }
+                            {
+                                loading ? (
+                                    <p styleName="grid-loading">加载中。。。。。。。。。。。</p>
+                                ) : null
                             }
                         </div>
                     </div>

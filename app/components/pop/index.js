@@ -38,7 +38,7 @@ class Pop extends PureComponent {
         if (nextProps.location !== this.props.location) {
             let nextEntryType = this._getEntryType(nextProps.location.pathname),
                 prevEntryType = this._getEntryType(this.props.location.pathname);
-            if (nextEntryType !== prevEntryType) {
+            if (nextEntryType && nextEntryType !== prevEntryType) {
                 this.props.traceBackPop(nextEntryType);
             }
         }
