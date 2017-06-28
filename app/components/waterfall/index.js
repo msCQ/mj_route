@@ -7,7 +7,7 @@ import minBy from 'lodash/minBy'
 import maxBy from 'lodash/maxBy'
 
 const gridData = [
-    {w: 236, h: 450},
+    {w: 236, h: 200},
     {w: 236, h: 120},
     {w: 236, h: 230},
     {w: 236, h: 180},
@@ -27,9 +27,13 @@ class WaterFall extends PureComponent {
     }
 
     static propTypes = {
-        windowObj: PropTypes.object
+        windowObj: PropTypes.object,
+        dataEnd: PropTypes.bool
     }
-    static props = {}
+    static props = {
+        list: [],
+        dataEnd: false
+    }
 
     state = {
         firstRenderIndex: 0,
@@ -53,7 +57,7 @@ class WaterFall extends PureComponent {
             column: 4
         },
         loading: false,
-        end: false
+
     }
 
     scrollTop = 0
@@ -78,7 +82,7 @@ class WaterFall extends PureComponent {
 
     initGrid = (column) => {
         let girdS = []
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 1; i++) {
             gridData.forEach((i) => {
                 girdS.push({...i});
             })
@@ -116,7 +120,13 @@ class WaterFall extends PureComponent {
             list: boards,
             gridHeight: curGridHeight,
         })
-        this.refs['WaterFall_Gird'].scrollTop = curScrollTop    //重置scrollTop 触发onscroll
+        /**
+         * 精妙
+         * 当滚动存在的是否
+         *  存在 重置scrollTop 触发必定触发一次onscroll
+         *  不存在 安下标来渲染
+         */
+        this.refs['WaterFall_Gird'].scrollTop = curScrollTop
     }
 
     handleScroll = (e) => {
@@ -155,7 +165,7 @@ class WaterFall extends PureComponent {
         /**
          * 判断是否scroll 距离底部还有20个长度加载数据
          */
-        if (scrollTop + offsetHeight > gridHeight - 20 && !loading) {
+        if (scrollTop + offsetHeight > gridHeight - 20 && !loading && !this.props.dataEnd) {
             this.setState((prevState, props) => {
                 this.fetchData();
                 return {
