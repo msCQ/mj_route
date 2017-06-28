@@ -1,4 +1,4 @@
-import React, {PropTypes, Component, PureComponent} from 'react'
+import React, {PureComponent} from 'react'
 import {Route, Switch, Redirect} from 'react-router'
 import Home from '@/components/home/index'
 import Search from '@/components/search/index'
@@ -10,7 +10,7 @@ import withCss from '@/services/withCss'
 import styles from './page.less'
 
 @withCss(styles)
-class Page extends Component {
+class Page extends PureComponent {
     constructor(props) {
         super(props)
     }

@@ -1,5 +1,4 @@
 import {SETTING_EDIT_MODE, SETTING_WINDOW_MODE} from '@/redux/action/appSetting'
-const WINDOW_MODE = 'WINDOW_MODE'
 
 let initAppSetting = {
     windowObj: {
@@ -24,7 +23,6 @@ export default function appSetting(state = initAppSetting, action) {
                 mode = 'big'
             }
             return {...state, windowObj: {h, w, mode}}
-            break;
         case SETTING_EDIT_MODE:
 
             break;

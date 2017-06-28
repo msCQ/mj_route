@@ -31,15 +31,16 @@ module.exports = {
             '@': resolve('app'),
         },
     },
+    externals: {
+        'React': 'React'
+    },
     module: {
+        preLoaders: [{
+            test: /\.js|jsx$/,
+            exclude: /node_modules/,
+            loader: "eslint-loader",
+        }],
         loaders: [
-            // {
-            //     test: /\.js$/,
-            //     enforce: "pre",
-            //     exclude: /node_modules/,
-            //     loader: "eslint-loader",
-            // },
-
             {
                 test: /\.tsx?$/,
                 loader: "awesome-typescript-loader"

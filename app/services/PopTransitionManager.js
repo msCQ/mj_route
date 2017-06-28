@@ -81,7 +81,6 @@ class PopTransitionManager {
             hash = this.entries[entry][s];
         if (!this.hashPopManager.go(hash, -1)) {
             throw new Error('goBack Failed!!!')
-            return []
         }
         return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
@@ -91,7 +90,6 @@ class PopTransitionManager {
             hash = this.entries[entry][s];
         if (!this.hashPopManager.go(hash, 1)) {
             throw new Error('goForword Failed!!!')
-            return []
         }
         return this.entries[entry].map((hash) => this.hashPopManager.getCurrentData(hash))
     }
@@ -138,15 +136,15 @@ class HashPopManager {
     }
 
     replace(hash, data) {
-        let obj = this.entries[hash],
-            action = 'REPLACE';
+        // let obj = this.entries[hash];
+            // action = 'REPLACE';
         this.entries[hash].history[this.entries[hash].l] = data
     }
 
     go(hash, n) {
         let obj = this.entries[hash],
-            nextIndex = clamp(obj.l + n, 0, obj.history.length - 1),
-            action = 'POP';
+            nextIndex = clamp(obj.l + n, 0, obj.history.length - 1);
+            // action = 'POP';
         obj.l = nextIndex;
         return nextIndex >= 0 && nextIndex <= obj.history.length - 1
     }

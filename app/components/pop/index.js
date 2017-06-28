@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {POP_MAP} from '@/services/const'
-import ReactCSSTransitionGroup from "react/lib/ReactCSSTransitionGroup"
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 
 import {
     openPop,
@@ -34,11 +34,11 @@ class Pop extends PureComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps, nextState) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.location !== this.props.location) {
             let nextEntryType = this._getEntryType(nextProps.location.pathname),
                 prevEntryType = this._getEntryType(this.props.location.pathname);
-            if (nextEntryType !== prevEntryType && ~nextEntryType.indexOf('ITEM','MYBOARD', 'SEARCH')) {
+            if (nextEntryType !== prevEntryType && ~nextEntryType.indexOf('ITEM', 'MYBOARD', 'SEARCH')) {
                 this.props.traceBackPop(nextEntryType);
             }
         }
@@ -120,7 +120,7 @@ class Modal extends PureComponent {
 
     }
 
-    componentWillReceiveProps(nextProps, nextState) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
             console.log('diff');
         }

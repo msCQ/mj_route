@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import {withRouter} from 'react-router'
 
 import withCss from '@/services/withCss'
 import styles from './tab.less'
 
 @withCss(styles)
-class Tab extends React.PureComponent {
+class Tab extends PureComponent {
     constructor(props) {
         super(props)
     }
@@ -15,7 +15,7 @@ class Tab extends React.PureComponent {
     }
 
     render() {
-        const {match, history, location} = this.props,
+        const {history} = this.props,
             {tabs} = this.state
         return (
             <div styleName="tab">

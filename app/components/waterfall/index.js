@@ -1,4 +1,4 @@
-import React, {PureComponent, Component} from 'react'
+import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import withCss from '@/services/withCss'
@@ -67,7 +67,7 @@ class WaterFall extends PureComponent {
         this.initGrid(column)
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.windowObj !== this.props.windowObj) {
             let {mode} = nextProps.windowObj,
                 column = this.state[mode].column
@@ -166,7 +166,7 @@ class WaterFall extends PureComponent {
          * 判断是否scroll 距离底部还有20个长度加载数据
          */
         if (scrollTop + offsetHeight > gridHeight - 20 && !loading && !this.props.dataEnd) {
-            this.setState((prevState, props) => {
+            this.setState((prevState) => {
                 this.fetchData();
                 return {
                     gridHeight: prevState.gridHeight + 40,
@@ -210,7 +210,7 @@ class WaterFall extends PureComponent {
     }
 
     fetchData = () => {
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
             setTimeout(() => {
                 if (this.__isMounted) return
                 resolve(gridData.map((i) => {
@@ -226,7 +226,7 @@ class WaterFall extends PureComponent {
             let {column} = this.state[this.props.windowObj.mode],
                 curList = this.state.list.concat(iList),
                 gridObject = this.getGridObject(curList, column),
-                {boards, columns} = gridObject,
+                {columns} = gridObject,
                 maxHeight = maxBy(columns, (column) => {
                     return column.h
                 }).h,
@@ -242,7 +242,7 @@ class WaterFall extends PureComponent {
             })
 
         }, () => {
-            this.setState((prevState, props) => {
+            this.setState((prevState) => {
                 return {
                     gridHeight: prevState.gridHeight - 40,
                     loading: false
@@ -269,7 +269,7 @@ class WaterFall extends PureComponent {
                                 height: gridHeight
                             }}>
                             {
-                                renderList.map((board, index) => {
+                                renderList.map((board) => {
                                     return <Board key={board.index}
                                                   x={board.x}
                                                   y={board.y}

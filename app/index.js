@@ -1,20 +1,20 @@
 import ReactDom from 'react-dom'
-import React from 'react'
-import {Router, Route, Redirect, Switch} from 'react-router'
+import React, {PureComponent} from 'react'
+import {Router, Route, Switch} from 'react-router'
 import Index from '@/components/index'
 import Login from '@/components/login/index'
-import {createHashHistory, createMemoryHistory} from 'history'
+import {createMemoryHistory} from 'history'
 import '@/styles/reset.css'
 import {Provider} from 'react-redux'
 import store from '@/redux/store'
+import Perf from 'react-dom/lib/ReactPerf'      //偏好设置
 
-
-import Perf from 'react-dom/lib/ReactPerf'    //
 window.Perf = Perf
 
 const history = createMemoryHistory()
 
-class App extends React.PureComponent {
+
+class App extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {}

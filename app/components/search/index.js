@@ -1,15 +1,14 @@
 import React, {PureComponent} from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {openPop} from '@/redux/action/pop'
 
-class Search extends React.PureComponent {
+class Search extends PureComponent {
     constructor(props) {
         super(props)
     }
 
     render() {
-        const {match, location, history} = this.props
         return (
             <div>
                 Search
@@ -25,11 +24,11 @@ class Search extends React.PureComponent {
     }
 }
 
-const mapStateToProps = function (state) {
+const mapStateToProps = function () {
     return {}
 }
 
-const mapDispatchProps = function (dispatch, getState) {
+const mapDispatchProps = function (dispatch) {
     return {
         openPop: (entry, data) => {
             dispatch(openPop(entry, data))

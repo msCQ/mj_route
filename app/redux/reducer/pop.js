@@ -1,5 +1,3 @@
-import {POP} from '../action/pop'
-
 export default function pop(state = {
     entry: 'HOME',
     pops: []

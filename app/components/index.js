@@ -46,7 +46,7 @@ class Index extends PureComponent {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {}
 }
 

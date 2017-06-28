@@ -107,7 +107,7 @@ export function innerPopGoForword(entry) {
 }
 
 export function asyncClosePopAll() {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         dispatch(closePopAll('HOME'))
     }
 
