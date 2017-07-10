@@ -58,6 +58,24 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
+let headers = new Headers();
+headers.append('Accept', 'application/json, text/plain, */*');
+headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+let form = new FormData()
+form.set('a', 1)
+form.set('b', 1)
+
+fetch('/api/login/helloworld?c=2', {
+    headers,
+    method: 'POST',
+    body: 'asdasda=12&ad=111111'
+    // cache: 'default'
+}).then((res) => {
+    return res.json()
+}).then(() => {
+    console.log(11111)
+})
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index)
 

@@ -6,8 +6,10 @@ import MyBoard from '@/components/myBoard/index'
 import Tab from '@/components/tab/index'
 import Pop from '@/components/pop/index'
 import WaterFall from '@/components/waterfall/index'
+import IScroll from '@/components/iScroll/index'
 import withCss from '@/services/withCss'
 import styles from './page.less'
+
 
 @withCss(styles)
 class Page extends PureComponent {
@@ -26,6 +28,7 @@ class Page extends PureComponent {
                         <Route path="/home" component={Home}/>
                         <Route path="/search" component={Search}/>
                         <Route path="/myBoard" component={MyBoard}/>
+                        <Route path="/iScroll" component={IScroll}/>
                     </Switch>
                     <Pop/>
                 </section>

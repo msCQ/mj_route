@@ -11,7 +11,7 @@ class Tab extends PureComponent {
     }
 
     state = {
-        tabs: ['home', 'search', 'myBoard', 'waterfall']
+        tabs: ['home', 'search', 'myBoard', 'waterfall', 'iscroll']
     }
 
     render() {

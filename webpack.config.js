@@ -35,11 +35,11 @@ module.exports = {
         'React': 'React'
     },
     module: {
-        preLoaders: [{
-            test: /\.js|jsx$/,
-            exclude: /node_modules/,
-            loader: "eslint-loader",
-        }],
+        // preLoaders: [{
+        //     test: /\.js|jsx$/,
+        //     exclude: /node_modules/,
+        //     loader: "eslint-loader",
+        // }],
         loaders: [
             {
                 test: /\.tsx?$/,

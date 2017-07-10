@@ -5,6 +5,7 @@ import Index from '@/components/index'
 import Login from '@/components/login/index'
 import {createMemoryHistory} from 'history'
 import '@/styles/reset.css'
+import '@/styles/index.less'
 import {Provider} from 'react-redux'
 import store from '@/redux/store'
 import Perf from 'react-dom/lib/ReactPerf'      //偏好设置

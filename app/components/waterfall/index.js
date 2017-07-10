@@ -82,7 +82,7 @@ class WaterFall extends PureComponent {
 
     initGrid = (column) => {
         let girdS = []
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 10; i++) {
             gridData.forEach((i) => {
                 girdS.push({...i});
             })
@@ -126,10 +126,12 @@ class WaterFall extends PureComponent {
          *  存在 重置scrollTop 触发必定触发一次onscroll
          *  不存在 安下标来渲染
          */
-        this.refs['WaterFall_Gird'].scrollTop = curScrollTop
+        this.WaterfallGirdDom.scrollTop = curScrollTop
     }
 
     handleScroll = (e) => {
+
+
         /**
          * 获取需要渲染的10个dom
          * 如何计算一个 第一个dom
@@ -159,7 +161,7 @@ class WaterFall extends PureComponent {
                 firstRenderIndex,
                 renderList
             })
-            console.log('第一个渲染的DOM 下标', firstRenderIndex, `scrollTop: ${scrollTop}`)
+            // console.log('第一个渲染的DOM 下标', firstRenderIndex, `scrollTop: ${scrollTop}`)
         }
 
         /**
@@ -250,44 +252,50 @@ class WaterFall extends PureComponent {
             })
         })
     }
-
     render() {
         let {renderList, gridHeight, loading} = this.state,
             iWidth = this.state[this.props.windowObj.mode].iWidth
 
         return (
-            <section styleName="waterfall"
-                     ref="WaterFall_Gird"
-                     onScroll={this.handleScroll}
-            >
-                <div styleName="grid-center">
-                    <div>
-                        <div
-                            styleName="grid-contains"
-                            style={{
-                                width: iWidth,
-                                height: gridHeight
-                            }}>
-                            {
-                                renderList.map((board) => {
-                                    return <Board key={board.index}
-                                                  x={board.x}
-                                                  y={board.y}
-                                                  w={board.w}
-                                                  h={board.h}
-                                                  index={board.index}
-                                    />
-                                })
-                            }
-                            {
-                                loading ? (
-                                    <p styleName="grid-loading">加载中。。。。。。。。。。。</p>
-                                ) : null
-                            }
+            <div>
+                {/*<RightFixPanel />*/}
+
+                <section styleName="waterfall"
+                         ref={(WaterfallGirdDom) => {
+                             if (WaterfallGirdDom) {
+                                 this.WaterfallGirdDom = WaterfallGirdDom
+                             }
+                         }}
+                         onScroll={this.handleScroll}
+                >
+                    <div styleName="grid-center">
+                        <div>
+                            <div styleName="grid-contains"
+                                 style={{
+                                     width: iWidth,
+                                     height: gridHeight
+                                 }}>
+                                {
+                                    renderList.map((board) => {
+                                        return <Board key={board.index}
+                                                      x={board.x}
+                                                      y={board.y}
+                                                      w={board.w}
+                                                      h={board.h}
+                                                      index={board.index}
+                                        />
+                                    })
+                                }
+                                {
+                                    loading ? (
+                                        <p styleName="grid-loading">加载中。。。。。。。。。。。</p>
+                                    ) : null
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         )
 
     }
@@ -326,6 +334,7 @@ class Board extends PureComponent {
         )
     }
 }
+
 
 function mapStateToProps(state) {
     return {
